@@ -35,14 +35,14 @@ map<uint256, CBlockIndex*> mapBlockIndex;
 set<pair<COutPoint, unsigned int> > setStakeSeen;
 uint256 hashGenesisBlock = hashGenesisBlockOfficial;
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20);
-static CBigNum bnProofOfStakeLimit(~uint256(0) >> 20);
+static CBigNum bnProofOfStakeLimit(~uint256(0) >> 2);
 
 static CBigNum bnProofOfWorkLimitTestNet(~uint256(0) >> 16);
 static CBigNum bnProofOfStakeLimitTestNet(~uint256(0) >> 30);
 
-unsigned int nStakeMinAge = 60 * 60 * 6 * 1;	// minimum age for coin age:  6h
-unsigned int nStakeMaxAge = 60 * 60 * 24 * 4;	// stake age of full weight:  4d
-unsigned int nStakeTargetSpacing = 60;			// 30 sec block spacing
+unsigned int nStakeMinAge = 60 * 60 * 1 * 1;	//1h, minimum age for coin age:  6h
+unsigned int nStakeMaxAge = 60 * 60 * 8 * 1;	//8h, stake age of full weight:  4d 60*60*24*1
+unsigned int nStakeTargetSpacing = 60;			// 60 sec block spacing
 
 int64 nChainStartTime = 1391393673;
 int nCoinbaseMaturity = 40;
@@ -2221,6 +2221,20 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
     }
 
     CBlockIndex* pcheckpoint = Checkpoints::GetLastSyncCheckpoint();
+
+    if(pcheckpoint && fDebug)
+    {
+	const CBlockIndex* pindexLastPos = GetLastBlockIndex(pcheckpoint, true);
+        if(pindexLastPos)
+	{
+            printf("ProcessBlock(): Last POS Block Height: %d \n", pindexLastPos->nHeight);
+	}
+	else
+	{
+	    printf("ProcessBlock(): Previous POS block not found.\n");
+	}
+    }
+
     if (pcheckpoint && pblock->hashPrevBlock != hashBestChain && !Checkpoints::WantedByPendingSyncCheckpoint(hash))
     {
         // Extra checks to prevent "fill up memory by spamming with bogus blocks"
@@ -4325,7 +4339,7 @@ void BitcoinMiner(CWallet *pwallet, bool fProofOfStake)
                 CheckWork(pblock.get(), *pwalletMain, reservekey);
                 SetThreadPriority(THREAD_PRIORITY_LOWEST);
             }
-            Sleep(500);
+            Sleep(250);
             continue;
         }
 

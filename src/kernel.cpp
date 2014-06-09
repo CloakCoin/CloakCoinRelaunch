@@ -238,11 +238,13 @@ static bool GetKernelStakeModifier(uint256 hashBlockFrom, uint64& nStakeModifier
                 return error("GetKernelStakeModifier() : reached best block %s at height %d from block %s",
                     pindex->GetBlockHash().ToString().c_str(), pindex->nHeight, hashBlockFrom.ToString().c_str());
             else
-			{
-				// printf(">> nStakeModifierTime = %"PRI64d", pindexFrom->GetBlockTime() = %"PRI64d", nStakeModifierSelectionInterval = %"PRI64d"\n",
-				// 	nStakeModifierTime, pindexFrom->GetBlockTime(), nStakeModifierSelectionInterval);
+  	    {
+		if(fDebug)
+			printf(">> nStakeModifierTime = %"PRI64d", pindexFrom->GetBlockTime() = %"PRI64d", nStakeModifierSelectionInterval = %"PRI64d"\n", 
+				nStakeModifierTime, pindexFrom->GetBlockTime(), nStakeModifierSelectionInterval);
+
                 return false;
-			}
+	    }
         }
         pindex = pindex->pnext;
         if (pindex->GeneratedStakeModifier())
@@ -306,10 +308,13 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
 
     if (!GetKernelStakeModifier(blockFrom.GetHash(), nStakeModifier, nStakeModifierHeight, nStakeModifierTime, fPrintProofOfStake))
 	{
-		// printf(">>> CheckStakeKernelHash: GetKernelStakeModifier return false\n");
-        return false;
+		if(fDebug)
+		    printf(">>> CheckStakeKernelHash: GetKernelStakeModifier return false\n");
+        
+		return false;
 	}
-	// printf(">>> CheckStakeKernelHash: passed GetKernelStakeModifier\n");
+    
+    printf(">>> CheckStakeKernelHash: passed GetKernelStakeModifier\n");
     ss << nStakeModifier;
 
     ss << nTimeBlockFrom << nTxPrevOffset << txPrev.nTime << prevout.n << nTimeTx;
@@ -331,9 +336,12 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
     // Now check if proof-of-stake hash meets target protocol
     if (CBigNum(hashProofOfStake) > bnCoinDayWeight * bnTargetPerCoinDay)
 	{
-		// printf(">>> bnCoinDayWeight = %s, bnTargetPerCoinDay=%s\n", 
-		//	bnCoinDayWeight.ToString().c_str(), bnTargetPerCoinDay.ToString().c_str()); 
-		// printf(">>> CheckStakeKernelHash - hashProofOfStake too much\n");
+		if(fDebug)
+		{
+		 printf(">>> bnCoinDayWeight = %s, bnTargetPerCoinDay=%s\n", 
+			bnCoinDayWeight.ToString().c_str(), bnTargetPerCoinDay.ToString().c_str()); 
+		 printf(">>> CheckStakeKernelHash - hashProofOfStake too much\n");
+		}
         return false;
 	}
 
