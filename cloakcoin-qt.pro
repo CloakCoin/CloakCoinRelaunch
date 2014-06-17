@@ -1,3 +1,4 @@
+QT       += core gui network
 TEMPLATE = app
 TARGET = cloakcoin-qt
 VERSION = 0.7.2
@@ -194,6 +195,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/sph_fugue.h \
     src/sph_hamsi.h \
     src/sph_types.h \
+    src/qt/httpsocket.h \
+    src/qt/cloaksend.h \
 
 SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/transactiontablemodel.cpp \
@@ -275,7 +278,9 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/skein.c \
     src/fugue.c \
     src/hamsi.c \
-    src/scrypt.cpp
+    src/scrypt.cpp \
+    src/qt/httpsocket.cpp \
+    src/qt/cloaksend.cpp \
 
 RESOURCES += \
     src/qt/bitcoin.qrc

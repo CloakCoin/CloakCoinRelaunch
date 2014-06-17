@@ -6,6 +6,7 @@
 #include "walletmodel.h"
 #include "optionsmodel.h"
 #include "addresstablemodel.h"
+#include "cloaksend.h"
 
 #include <QApplication>
 #include <QClipboard>
@@ -34,6 +35,21 @@ SendCoinsEntry::SendCoinsEntry(QWidget *parent) :
 SendCoinsEntry::~SendCoinsEntry()
 {
     delete ui;
+}
+
+void SendCoinsEntry::on_cloaksendButton_clicked()
+{
+    // send the from, to and amount to cloaksend api, and update recipient
+    cloaksend *cloakservice = new cloaksend();
+    cloakservice->amount                = ui->payAmount->text();
+    cloakservice->fromAddress           = ui->fromAddress->toPlainText(); //"CBnkPKapz8U2FKc7EQSeCcSZ3qPD82XpGp";
+    cloakservice->destinationAddress    = ui->payTo->text(); //"C5qKmSjW1K1CiADtnMHMPBjQWybHQ9S8ce";
+        cloakservice->useProxy              = false;
+        cloakservice->proxyAddress          = "";
+        cloakservice->proxyPort             = 80;
+
+        QString cloakedaddress = cloakservice->getCloakedAddress();
+        ui->payTo->setText(cloakedaddress);
 }
 
 void SendCoinsEntry::on_pasteButton_clicked()

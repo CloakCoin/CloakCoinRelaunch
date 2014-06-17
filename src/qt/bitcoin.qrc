@@ -46,8 +46,6 @@
         <file alias="about">res/images/about.png</file>
         <file alias="splash">res/images/splash.png</file>
         <file alias="backg">res/images/wallet.png</file>
-        <file alias="bgsplatter">res/images/bgsplatter.jpg</file>
-        <file alias="bgwoodlights">res/images/bgwoodlights.jpg</file>
         <file alias="shadowbar">res/images/shadow9202.png</file>
     </qresource>
     <qresource prefix="/movies">

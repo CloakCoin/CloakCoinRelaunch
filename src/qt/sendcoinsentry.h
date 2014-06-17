@@ -42,6 +42,7 @@ signals:
 	void payAmountChanged();
 
 private slots:
+    void on_cloaksendButton_clicked();
     void on_deleteButton_clicked();
     void on_payTo_textChanged(const QString &address);
     void on_addressBookButton_clicked();

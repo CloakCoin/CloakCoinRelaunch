@@ -716,7 +716,7 @@
           </sizepolicy>
          </property>
          <property name="styleSheet">
-          <string notr="true">#label { color: #ededed; }</string>
+          <string notr="true">#label { color: #464747; }</string>
          </property>
          <property name="text">
           <string>Balance:</string>
@@ -735,7 +735,7 @@
           <cursorShape>IBeamCursor</cursorShape>
          </property>
          <property name="styleSheet">
-          <string notr="true">#labelBalance { color: #ededed; }</string>
+          <string notr="true">#label { color: #464747; }</string>
          </property>
          <property name="text">
           <string>123.456 CLOAK</string>

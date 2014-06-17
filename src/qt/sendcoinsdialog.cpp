@@ -12,6 +12,7 @@
 #include "askpassphrasedialog.h"
 #include "coincontrol.h"
 #include "coincontroldialog.h"
+#include "cloaksend.h"
 
 #include <QMessageBox>
 #include <QLocale>
@@ -108,6 +109,7 @@ SendCoinsDialog::~SendCoinsDialog()
 {
     delete ui;
 }
+
 
 void SendCoinsDialog::on_sendButton_clicked()
 {

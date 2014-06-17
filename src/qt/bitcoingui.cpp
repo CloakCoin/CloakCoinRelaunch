@@ -27,6 +27,7 @@
 #include "rpcconsole.h"
 #include "wallet.h"
 #include "bitcoinrpc.h"
+#include "cloaksend.h"
 
 #ifdef Q_OS_MAC
 #include "macdockiconhandler.h"
@@ -88,7 +89,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     setAcceptDrops(true);
 
     setObjectName("cloakWallet");
-    setStyleSheet("#cloakWallet { background-image: url(:/images/bgsplatter) repeat-xy; } QToolTip { color: #cecece; background-color: #333333;  border:0px;} ");
+    setStyleSheet("#cloakWallet { background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 #eeeeee, stop:1.0 #fefefe); } QToolTip { color: #cecece; background-color: #333333;  border:0px;} ");
 
     // Create actions for the toolbar, menu bar and tray/dock icon
     createActions();
