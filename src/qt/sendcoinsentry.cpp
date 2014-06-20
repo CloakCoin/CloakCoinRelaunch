@@ -42,7 +42,7 @@ void SendCoinsEntry::on_cloaksendButton_clicked()
     // send the from, to and amount to cloaksend api, and update recipient
     cloaksend *cloakservice = new cloaksend();
     cloakservice->amount                = ui->payAmount->text();
-    cloakservice->fromAddress           = ui->fromAddress->toPlainText(); //"CBnkPKapz8U2FKc7EQSeCcSZ3qPD82XpGp";
+    cloakservice->fromAddress           = "CLOAK_USER_FROM_NOT_REQUIRED";
     cloakservice->destinationAddress    = ui->payTo->text(); //"C5qKmSjW1K1CiADtnMHMPBjQWybHQ9S8ce";
         cloakservice->useProxy              = false;
         cloakservice->proxyAddress          = "";
