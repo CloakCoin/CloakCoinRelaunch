@@ -2003,10 +2003,6 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot) const
     if (fCheckPOW && IsProofOfWork() && !CheckProofOfWork(GetHash(), nBits))
         return DoS(50, error("CheckBlock() : proof of work failed"));
 
-    // Check timestamp
-    if (GetBlockTime() > GetAdjustedTime() + nMaxClockDrift)
-        return error("CheckBlock() : block timestamp too far in the future");
-
     // First transaction must be coinbase, the rest must not be
     if (vtx.empty() || !vtx[0].IsCoinBase())
         return DoS(100, error("CheckBlock() : first tx is not coinbase"));
@@ -2022,14 +2018,6 @@ bool CBlock::CheckBlock(bool fCheckPOW, bool fCheckMerkleRoot) const
     // ppcoin: coinbase output should be empty if proof-of-stake block
     if (IsProofOfStake() && (vtx[0].vout.size() != 1 || !vtx[0].vout[0].IsEmpty()))
         return error("CheckBlock() : coinbase output not empty for proof-of-stake block");
-
-    // Check coinbase timestamp
-    if (GetBlockTime() > (int64)vtx[0].nTime + nMaxClockDrift)
-        return DoS(50, error("CheckBlock() : coinbase timestamp is too early"));
-
-    // Check coinstake timestamp
-    if (IsProofOfStake() && !CheckCoinStakeTimestamp(GetBlockTime(), (int64)vtx[1].nTime))
-        return DoS(50, error("CheckBlock() : coinstake timestamp violation nTimeBlock=%"PRI64d" nTimeTx=%u", GetBlockTime(), vtx[1].nTime));
 
     // Check transactions
     BOOST_FOREACH(const CTransaction& tx, vtx)
@@ -2093,9 +2081,13 @@ bool CBlock::AcceptBlock()
     if (nBits != GetNextTargetRequired(pindexPrev, IsProofOfStake()))
         return DoS(100, error("AcceptBlock() : incorrect %s", IsProofOfWork() ? "proof-of-work" : "proof-of-stake"));
 
-    // Check timestamp against prev
-    if (GetBlockTime() <= pindexPrev->GetMedianTimePast() || GetBlockTime() + nMaxClockDrift < pindexPrev->GetBlockTime())
-        return error("AcceptBlock() : block's timestamp is too early");
+    // Check timestamp
+    if (GetBlockTime() > GetAdjustedTime() + GetMaxClockDrift(nHeight))
+        return error("AcceptBlock() : block timestamp too far in the future");
+
+    // Check coinbase timestamp
+    if (GetBlockTime() > (int64)vtx[0].nTime + GetMaxClockDrift(nHeight))
+        return DoS(50, error("AcceptBlock() : coinbase timestamp is too early"));
 
     // Check that all transactions are finalized
     BOOST_FOREACH(const CTransaction& tx, vtx)

@@ -314,7 +314,9 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
 		return false;
 	}
     
-    printf(">>> CheckStakeKernelHash: passed GetKernelStakeModifier\n");
+    if(fDebug && fPrintProofOfStake)
+        printf(">>> CheckStakeKernelHash: passed GetKernelStakeModifier\n");
+
     ss << nStakeModifier;
 
     ss << nTimeBlockFrom << nTxPrevOffset << txPrev.nTime << prevout.n << nTimeTx;
