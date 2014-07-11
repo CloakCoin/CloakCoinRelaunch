@@ -52,7 +52,7 @@ static const int fHaveUPnP = false;
 #endif
 
 static const uint256 hashGenesisBlockOfficial("0x2d8251121940abce6e28df134c6432e8c5a00d59989a2451806c2778c3a06112");
-static const uint256 hashGenesisBlockTestNet ("0x2d8251121940abce6e28df134c6432e8c5a00d59989a2451806c2778c3a06112");
+static const uint256 hashGenesisBlockTestNet ("0x865ab1be14fd34531a5a506f10032b0082a3b064b4af38fda77449e80971e627");
 
 static const int64 nClockDriftSwitchHeight = 59860;
 static const int64 nMaxClockDriftOrig = 2 * 60 * 60;
